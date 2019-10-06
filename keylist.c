@@ -41,7 +41,7 @@
 
 #include <stdlib.h>
 
-#include "keylist.h"            // check for valid prototypes
+#include "keylist.h"  // check for valid prototypes
 
 #ifndef FALSE
 #define FALSE 0
@@ -72,10 +72,10 @@ static struct Keylist *KeylistCreate(void)
 // returns TRUE if success, FALSE if failed
 static int CheckArraySize(OS_Keylist list)
 {
-    int new_size = 0;           // set it up so that no size change is the default
-    const int chunk = 8;        // minimum number of nodes to allocate memory for
-    struct Keylist_Node **new_array;    // new array of nodes, if needed
-    int i;                      // counter
+    int new_size = 0;     // set it up so that no size change is the default
+    const int chunk = 8;  // minimum number of nodes to allocate memory for
+    struct Keylist_Node **new_array;  // new array of nodes, if needed
+    int i;                            // counter
     if (!list)
         return FALSE;
 
@@ -87,9 +87,8 @@ static int CheckArraySize(OS_Keylist list)
     else if ((list->size > chunk) && (list->count < (list->size - chunk)))
         new_size = list->size - chunk;
     if (new_size) {
-
         // Allocate more room for node pointer array
-        new_array = calloc((size_t) new_size, sizeof(new_array));
+        new_array = calloc((size_t)new_size, sizeof(new_array));
 
         // See if we got the memory we wanted
         if (!new_array)
@@ -107,7 +106,6 @@ static int CheckArraySize(OS_Keylist list)
     }
     return TRUE;
 }
-
 
 // find the index of the key that we are looking for
 // since it is sorted, we can optimize the search
@@ -130,7 +128,6 @@ static int FindIndex(OS_Keylist list, KEY key, int *pIndex)
     right = list->count - 1;
     // assume that the list is sorted
     do {
-
         // A binary search
         index = (left + right) / 2;
         node = list->array[index];
@@ -142,15 +139,13 @@ static int FindIndex(OS_Keylist list, KEY key, int *pIndex)
 
         else
             left = index + 1;
-    }
-    while ((key != current_key) && (left <= right));
+    } while ((key != current_key) && (left <= right));
     if (key == current_key) {
         status = TRUE;
         *pIndex = index;
     }
 
     else {
-
         // where the index should be
         if (key > current_key)
             *pIndex = index + 1;
@@ -160,7 +155,6 @@ static int FindIndex(OS_Keylist list, KEY key, int *pIndex)
     }
     return (status);
 }
-
 
 /////////////////////////////////////////////////////////////////////
 // list data functions
@@ -175,7 +169,7 @@ int Keylist_Data_Add(OS_Keylist list, KEY key, void *data)
     if (list && CheckArraySize(list)) {
         // figure out where to put the new node
         if (list->count) {
-            (void) FindIndex(list, key, &index);
+            (void)FindIndex(list, key, &index);
             // Add to the beginning of the list
             if (index < 0)
                 index = 0;
@@ -213,25 +207,23 @@ void *Keylist_Data_Delete_By_Index(OS_Keylist list, int index)
     struct Keylist_Node *node;
     void *data = NULL;
 
-    if (list && list->array && list->count &&
-        (index >= 0) && (index < list->count)) {
+    if (list && list->array && list->count && (index >= 0) &&
+        (index < list->count)) {
         node = list->array[index];
         if (node)
             data = node->data;
 
         // move the nodes to account for the deleted one
         if (list->count == 1) {
-
             // There is no node shifting to do
         }
         // We are the last one
         else if (index == (list->count - 1)) {
-
             // There is no node shifting to do
         }
         // Move all the nodes down one
         else {
-            int i;              // counter
+            int i;  // counter
             int count = list->count - 1;
             for (i = index; i < count; i++) {
                 list->array[i] = list->array[i + 1];
@@ -242,18 +234,17 @@ void *Keylist_Data_Delete_By_Index(OS_Keylist list, int index)
             free(node);
 
         // potentially reduce the size of the array
-        (void) CheckArraySize(list);
+        (void)CheckArraySize(list);
     }
     return (data);
 }
-
 
 // deletes a node specified by its key
 // returns the data from the node
 void *Keylist_Data_Delete(OS_Keylist list, KEY key)
 {
-    void *data = NULL;          // return value
-    int index;                  // where the node is in the array
+    void *data = NULL;  // return value
+    int index;          // where the node is in the array
 
     if (list) {
         if (FindIndex(list, key, &index))
@@ -266,8 +257,8 @@ void *Keylist_Data_Delete(OS_Keylist list, KEY key)
 // returns the data from last node, and removes it from the list
 void *Keylist_Data_Pop(OS_Keylist list)
 {
-    void *data = NULL;          // return value
-    int index;                  // position in the array
+    void *data = NULL;  // return value
+    int index;          // position in the array
 
     if (list && list->count) {
         index = list->count - 1;
@@ -281,7 +272,7 @@ void *Keylist_Data_Pop(OS_Keylist list)
 void *Keylist_Data(OS_Keylist list, KEY key)
 {
     struct Keylist_Node *node = NULL;
-    int index = 0;              // used to look up the index of node
+    int index = 0;  // used to look up the index of node
 
     if (list && list->array && list->count) {
         if (FindIndex(list, key, &index))
@@ -296,8 +287,8 @@ void *Keylist_Data_Index(OS_Keylist list, int index)
 {
     struct Keylist_Node *node = NULL;
 
-    if (list && list->array && list->count &&
-        (index >= 0) && (index < list->count))
+    if (list && list->array && list->count && (index >= 0) &&
+        (index < list->count))
         node = list->array[index];
 
     return node ? node->data : NULL;
@@ -306,11 +297,11 @@ void *Keylist_Data_Index(OS_Keylist list, int index)
 // return the key at the given index
 KEY Keylist_Key(OS_Keylist list, int index)
 {
-    KEY key = 0;                // return value
+    KEY key = 0;  // return value
     struct Keylist_Node *node;
 
-    if (list && list->array && list->count &&
-        (index >= 0) && (index < list->count)) {
+    if (list && list->array && list->count && (index >= 0) &&
+        (index < list->count)) {
         node = list->array[index];
         if (node)
             key = node->key;
@@ -358,12 +349,12 @@ OS_Keylist Keylist_Create(void)
 }
 
 // delete specified list
-void Keylist_Delete(OS_Keylist list)    // list number to be deleted
+void Keylist_Delete(OS_Keylist list)  // list number to be deleted
 {
     if (list) {
         // clean out the list
         while (list->count) {
-            (void) Keylist_Data_Delete_By_Index(list, 0);
+            (void)Keylist_Data_Delete_By_Index(list, 0);
         }
         if (list->array)
             free(list->array);
@@ -380,13 +371,12 @@ void Keylist_Delete(OS_Keylist list)    // list number to be deleted
 #include "ctest.h"
 
 // test the encode and decode macros
-void testKeySample(Test * pTest)
+void testKeySample(Test *pTest)
 {
     int type, id;
-    int type_list[] =
-        { 0, 1, KEY_TYPE_MAX / 2, KEY_TYPE_MAX - 2, KEY_TYPE_MAX - 1, -1 };
-    int id_list[] =
-        { 0, 1, KEY_ID_MAX / 2, KEY_ID_MAX - 2, KEY_ID_MAX - 1, -1 };
+    int type_list[] = {
+        0, 1, KEY_TYPE_MAX / 2, KEY_TYPE_MAX - 2, KEY_TYPE_MAX - 1, -1};
+    int id_list[] = {0, 1, KEY_ID_MAX / 2, KEY_ID_MAX - 2, KEY_ID_MAX - 1, -1};
     int type_index = 0;
     int id_index = 0;
     int decoded_type, decoded_id;
@@ -412,7 +402,7 @@ void testKeySample(Test * pTest)
 }
 
 // test the FIFO
-void testKeyListFIFO(Test * pTest)
+void testKeyListFIFO(Test *pTest)
 {
     OS_Keylist list;
     KEY key;
@@ -455,7 +445,7 @@ void testKeyListFIFO(Test * pTest)
 }
 
 // test the FILO
-void testKeyListFILO(Test * pTest)
+void testKeyListFILO(Test *pTest)
 {
     OS_Keylist list;
     KEY key;
@@ -501,7 +491,7 @@ void testKeyListFILO(Test * pTest)
     return;
 }
 
-void testKeyListDataKey(Test * pTest)
+void testKeyListDataKey(Test *pTest)
 {
     OS_Keylist list;
     KEY key;
@@ -573,15 +563,14 @@ void testKeyListDataKey(Test * pTest)
     // cleanup
     do {
         data = Keylist_Data_Pop(list);
-    }
-    while (data);
+    } while (data);
 
     Keylist_Delete(list);
 
     return;
 }
 
-void testKeyListDataIndex(Test * pTest)
+void testKeyListDataIndex(Test *pTest)
 {
     OS_Keylist list;
     KEY key;
@@ -601,7 +590,6 @@ void testKeyListDataIndex(Test * pTest)
     ct_test(pTest, index == 0);
     index = Keylist_Data_Add(list, key, data3);
     ct_test(pTest, index == 0);
-
 
     ct_test(pTest, Keylist_Count(list) == 3);
 
@@ -643,8 +631,7 @@ void testKeyListDataIndex(Test * pTest)
     // cleanup
     do {
         data = Keylist_Data_Pop(list);
-    }
-    while (data);
+    } while (data);
 
     Keylist_Delete(list);
 
@@ -652,7 +639,7 @@ void testKeyListDataIndex(Test * pTest)
 }
 
 // test access of a lot of entries
-void testKeyListLarge(Test * pTest)
+void testKeyListLarge(Test *pTest)
 {
     int data1 = 42;
     int *data;
@@ -667,7 +654,6 @@ void testKeyListLarge(Test * pTest)
 
     for (key = 0; key < num_keys; key++) {
         index = Keylist_Data_Add(list, key, &data1);
-
     }
     for (key = 0; key < num_keys; key++) {
         data = Keylist_Data(list, key);
@@ -706,11 +692,11 @@ int main(void)
 
     ct_setStream(pTest, stdout);
     ct_run(pTest);
-    (void) ct_report(pTest);
+    (void)ct_report(pTest);
 
     ct_destroy(pTest);
 
     return 0;
 }
-#endif                          /* TEST_KEYLIST */
-#endif                          /* TEST */
+#endif /* TEST_KEYLIST */
+#endif /* TEST */

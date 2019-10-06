@@ -1,0 +1,8 @@
+BasedOnStyle: google
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterReturnType: None
+BreakBeforeBraces: Linux
+IndentWidth: 4
+SortIncludes: false

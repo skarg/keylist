@@ -13,9 +13,9 @@
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with this program; if not, write to 
+ along with this program; if not, write to
  The Free Software Foundation, Inc.
- 59 Temple Place - Suite 330 
+ 59 Temple Place - Suite 330
  Boston, MA  02111-1307, USA.
 
  As a special exception, if other files instantiate templates or
@@ -42,7 +42,7 @@
 #include "ctest.h"
 
 // test the encode and decode macros
-void testKeys(Test * pTest)
+void testKeys(Test *pTest)
 {
     int type, id;
     int decoded_type, decoded_id;
@@ -62,11 +62,11 @@ void testKeys(Test * pTest)
 }
 
 // test the encode and decode macros
-void testKeySample(Test * pTest)
+void testKeySample(Test *pTest)
 {
     int type, id;
-    int type_list[] = { 0, 1, KEY_TYPE_MAX / 2, KEY_TYPE_MAX - 1, -1 };
-    int id_list[] = { 0, 1, KEY_ID_MAX / 2, KEY_ID_MAX - 1, -1 };
+    int type_list[] = {0, 1, KEY_TYPE_MAX / 2, KEY_TYPE_MAX - 1, -1};
+    int id_list[] = {0, 1, KEY_ID_MAX / 2, KEY_ID_MAX - 1, -1};
     int type_index = 0;
     int id_index = 0;
     int decoded_type, decoded_id;
@@ -99,18 +99,18 @@ int main(void)
 
     pTest = ct_create("key", NULL);
     /* add the individual tests */
-//  rc = ct_addTestFunction(pTest, testKeys);
-//  assert(rc);
+    //  rc = ct_addTestFunction(pTest, testKeys);
+    //  assert(rc);
     rc = ct_addTestFunction(pTest, testKeySample);
     assert(rc);
     /* run all the tests */
     ct_setStream(pTest, stdout);
     ct_run(pTest);
-    (void) ct_report(pTest);
+    (void)ct_report(pTest);
     /* completed testing - cleanup */
     ct_destroy(pTest);
 
     return 0;
 }
-#endif                          /* LOCAL_TEST */
+#endif /* LOCAL_TEST */
 #endif
