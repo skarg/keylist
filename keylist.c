@@ -88,7 +88,7 @@ static int CheckArraySize(OS_Keylist list)
         new_size = list->size - chunk;
     if (new_size) {
         // Allocate more room for node pointer array
-        new_array = calloc((size_t)new_size, sizeof(new_array));
+        new_array = calloc((size_t)new_size, sizeof(struct Keylist_Node *));
 
         // See if we got the memory we wanted
         if (!new_array)
@@ -427,13 +427,19 @@ void testKeyListFIFO(Test *pTest)
 
     data = Keylist_Data_Pop(list);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data1) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data1) == 0);
+    }
     data = Keylist_Data_Pop(list);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data2) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data2) == 0);
+    }
     data = Keylist_Data_Pop(list);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data3) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data3) == 0);
+    }
     data = Keylist_Data_Pop(list);
     ct_test(pTest, data == NULL);
     data = Keylist_Data_Pop(list);
@@ -470,15 +476,21 @@ void testKeyListFILO(Test *pTest)
 
     data = Keylist_Data_Delete_By_Index(list, 0);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data3) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data3) == 0);
+    }
 
     data = Keylist_Data_Delete_By_Index(list, 0);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data2) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data2) == 0);
+    }
 
     data = Keylist_Data_Delete_By_Index(list, 0);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data1) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data1) == 0);
+    }
 
     data = Keylist_Data_Delete_By_Index(list, 0);
     ct_test(pTest, data == NULL);
@@ -529,23 +541,31 @@ void testKeyListDataKey(Test *pTest)
     key = 2;
     data = Keylist_Data(list, key);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data2) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data2) == 0);
+    }
 
     key = 1;
     data = Keylist_Data(list, key);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data1) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data1) == 0);
+    }
 
     key = 3;
     data = Keylist_Data(list, key);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data3) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data3) == 0);
+    }
 
     // work the data
     key = 2;
     data = Keylist_Data_Delete(list, key);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data2) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data2) == 0);
+    }
     data = Keylist_Data_Delete(list, key);
     ct_test(pTest, data == NULL);
     ct_test(pTest, Keylist_Count(list) == 2);
@@ -553,12 +573,16 @@ void testKeyListDataKey(Test *pTest)
     key = 1;
     data = Keylist_Data(list, key);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data1) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data1) == 0);
+    }
 
     key = 3;
     data = Keylist_Data(list, key);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data3) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data3) == 0);
+    }
 
     // cleanup
     do {
@@ -596,34 +620,48 @@ void testKeyListDataIndex(Test *pTest)
     // look at the data
     data = Keylist_Data_Index(list, 0);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data3) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data3) == 0);
+    }
 
     data = Keylist_Data_Index(list, 1);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data2) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data2) == 0);
+    }
 
     data = Keylist_Data_Index(list, 2);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data1) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data1) == 0);
+    }
 
     // work the data
     data = Keylist_Data_Delete_By_Index(list, 1);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data2) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data2) == 0);
+    }
 
     ct_test(pTest, Keylist_Count(list) == 2);
 
     data = Keylist_Data_Index(list, 0);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data3) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data3) == 0);
+    }
 
     data = Keylist_Data_Index(list, 1);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data1) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data1) == 0);
+    }
 
     data = Keylist_Data_Delete_By_Index(list, 1);
     ct_test(pTest, data != NULL);
-    ct_test(pTest, strcmp(data, data1) == 0);
+    if (data != NULL) {
+        ct_test(pTest, strcmp(data, data1) == 0);
+    }
 
     data = Keylist_Data_Delete_By_Index(list, 1);
     ct_test(pTest, data == NULL);
@@ -654,6 +692,7 @@ void testKeyListLarge(Test *pTest)
 
     for (key = 0; key < num_keys; key++) {
         index = Keylist_Data_Add(list, key, &data1);
+        ct_test(pTest, index != -1);
     }
     for (key = 0; key < num_keys; key++) {
         data = Keylist_Data(list, key);

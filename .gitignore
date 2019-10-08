@@ -1,0 +1,8 @@
+*.elf
+*.bin
+*.hex
+*.a
+*.exe
+*.o
+tags
+test-results.xml
