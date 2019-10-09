@@ -1,5 +1,6 @@
 # keylist
 Keyed List C Library
+[![Build Status](https://travis-ci.com/skarg/keylist.svg?branch=master)](https://travis-ci.com/skarg/keylist)
 
 This is an enhanced array of pointers to data. 
 The list is sorted, indexed, and keyed.
